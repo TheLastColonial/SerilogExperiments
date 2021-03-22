@@ -10,6 +10,7 @@
     public class ToDoRepository : IRepository<ToDoItem>
     {
         private readonly ILogger log;
+
         public ToDoRepository(ILogger logger)
         {
             this.log = logger?.ForContext<ToDoRepository>();

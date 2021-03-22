@@ -13,6 +13,7 @@
     /// By using <see cref="LogContext"/> the properties are persisted though all logging not just the top level.
     /// However not sure saving the value to a logical thread will cause issues at scale.
     /// </remarks>
+    /// <seealso cref="https://nblumhardt.com/2020/09/serilog-inject-dependencies/"/>
     public class HeaderLoggingMiddlewareV2
     {
         private readonly RequestDelegate next;
