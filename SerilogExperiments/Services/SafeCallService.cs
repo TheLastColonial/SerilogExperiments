@@ -3,13 +3,16 @@
     using System;
     using System.Threading.Tasks;
     using Serilog;
+    using SerilogExperiments.Commands;
 
     /// <summary>
     /// Wrapping to make an IO call safely and with log relevent information
     /// </summary>
     public interface ISafeCallService
     {
+        Task Call(SafeCallServiceCommand command);
         Task Call(Func<Task> call, Guid correlationId, Type callingContext);
+        Task<T> Call<T>(SafeCallServiceQuery<T> command);
         Task<T> Call<T>(Func<Task<T>> call, Guid correlationId, Type callingContext);
     }
 
@@ -54,6 +57,41 @@
             catch (Exception ex)
             {
                 this.log.Error(ex, $"Failed {callingContext.Name}");
+                return default(T);
+            }
+        }
+
+        public async Task Call(SafeCallServiceCommand command)
+        {
+            this.log.ForContext(command.Context);
+
+            try
+            {
+                using (this.log.BeginTimedOperation(command.Name, identifier: command.CorrelationId.ToString()))
+                {
+                    await command.Func.Invoke();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.log.Error(ex, $"Failed {command.Context.Name}");
+            }
+        }
+
+        public async Task<T> Call<T>(SafeCallServiceQuery<T> command)
+        {
+            this.log.ForContext(command.Context);
+
+            try
+            {
+                using (this.log.BeginTimedOperation(command.Name, identifier: command.CorrelationId.ToString()))
+                {
+                    return await command.Func.Invoke();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.log.Error(ex, $"Failed {command.Context.Name}");
                 return default(T);
             }
         }

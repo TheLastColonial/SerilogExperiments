@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Serilog;
+    using SerilogExperiments.Commands;
     using SerilogExperiments.Models;
     using SerilogExperiments.Services;
 
@@ -27,20 +28,14 @@
 
         public async Task<ToDoItem> GetByIdAsync(int id)
         {
-            var result = await this.safeCallService.Call(                
+            var command = new SafeCallServiceQuery<ToDoItem>(
                 this.SimulatedRequest,
-                //() =>
-                //{
-                //    Task.Delay(1000);
-                //    return Task.FromResult(new ToDoItem()
-                //    {
-                //        Id = 1,
-                //        Description = "This is an important item",
-                //        Completed = true
-                //    });
-                //},
                 Guid.NewGuid(),
-                typeof(ToDoRepository));
+                typeof(ToDoRepository),
+                nameof(this.GetByIdAsync)
+                );
+
+            var result = await this.safeCallService.Call(command);
 
             return result;
         }
