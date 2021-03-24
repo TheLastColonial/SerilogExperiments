@@ -25,6 +25,7 @@
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
+            // todo upgrade to http accessor with V3
             using (LogContext.PushProperty(HttpHeaderConstants.CorrelationId, this.GetCorrelationId(httpContext)))
             using (LogContext.PushProperty(HttpHeaderConstants.MerchantId, this.GetMerchantId(httpContext)))
             {

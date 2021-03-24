@@ -9,10 +9,12 @@
     public class ToDoRepository : IRepository<ToDoItem>
     {
         private readonly ISafeCallService safeCallService;
+        private readonly IHttpHeaderAccessor headerAccessor;
 
-        public ToDoRepository(ISafeCallService safeCallService)
+        public ToDoRepository(ISafeCallService safeCallService, IHttpHeaderAccessor headerAccessor)
         {
             this.safeCallService = safeCallService;
+            this.headerAccessor = headerAccessor;
         }
 
         public Task<int> CreateAsync(ToDoItem model)
@@ -30,7 +32,7 @@
             var command = new SafeCallServiceQuery<ToDoItem>(
                 this.SimulatedDbCall,
                 new SafeCallServiceLogMetadata(
-                    Guid.NewGuid(),
+                    this.headerAccessor.CorrelationId,
                     typeof(ToDoRepository),
                     nameof(this.GetByIdAsync)));
 

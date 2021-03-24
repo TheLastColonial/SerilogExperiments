@@ -26,6 +26,10 @@ namespace SerilogExperiments
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddHttpContextAccessor();
+            services.AddTransient<IHttpHeaderAccessor, HttpHeaderAccessor>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(

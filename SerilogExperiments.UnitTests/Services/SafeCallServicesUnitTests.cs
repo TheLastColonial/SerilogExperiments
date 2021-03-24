@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Primitives;
     using Moq;
     using NUnit.Framework;
     using Serilog;
