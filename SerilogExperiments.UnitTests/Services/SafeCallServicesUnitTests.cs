@@ -7,6 +7,7 @@
     using Moq;
     using NUnit.Framework;
     using Serilog;
+    using SerilogExperiments.Commands;
     using SerilogExperiments.Services;
     using SerilogExperiments.UnitTests.Helpers;
 
@@ -42,7 +43,14 @@
         [Test]
         public async Task Call_WithValidParameters_LogTiming()
         {
-            await this.CallService.Call(() => Task.Delay(1000), Guid.NewGuid(), typeof(SafeCallService));
+            var command = new SafeCallServiceCommand(
+                () => Task.Delay(1000),
+                new SafeCallServiceLogMetadata(
+                    Guid.NewGuid(),
+                    typeof(SafeCallService),
+                    "Unit Tests"));
+
+            await this.CallService.Call(command);
         }
     }
 }

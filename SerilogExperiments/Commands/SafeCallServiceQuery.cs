@@ -6,23 +6,12 @@
     public class SafeCallServiceQuery<T>
     {
         public Func<Task<T>> Func { get; private set; }
-        public Guid CorrelationId { get; private set; }
-        public Type Context { get; private set; }
-        public string Name { get; private set; }
+        public SafeCallServiceLogMetadata Metadata { get; private set; }
 
-
-        public SafeCallServiceQuery(Func<Task<T>> func, Guid correlationId, Type context, string name)
+        public SafeCallServiceQuery(Func<Task<T>> func, SafeCallServiceLogMetadata metadata)
         {
             this.Func = func ?? throw new ArgumentNullException(nameof(func), $"Require {nameof(func)} to execute");
-            this.CorrelationId = correlationId;
-            this.Context = context ?? throw new ArgumentNullException(nameof(func), $"Require {nameof(context)} to reference source in logs");
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException(nameof(name), $"Require {nameof(name)} to reference source in logs");
-            }
-
-            this.Name = name;
+            this.Metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), $"Require {nameof(metadata)} for logging");
         }
     }
 }

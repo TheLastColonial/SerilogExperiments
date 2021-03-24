@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Serilog;
     using SerilogExperiments.Commands;
     using SerilogExperiments.Models;
     using SerilogExperiments.Services;
@@ -30,14 +29,12 @@
         {
             var command = new SafeCallServiceQuery<ToDoItem>(
                 this.SimulatedRequest,
-                Guid.NewGuid(),
-                typeof(ToDoRepository),
-                nameof(this.GetByIdAsync)
-                );
+                new SafeCallServiceLogMetadata(
+                    Guid.NewGuid(),
+                    typeof(ToDoRepository),
+                    nameof(this.GetByIdAsync)));
 
-            var result = await this.safeCallService.Call(command);
-
-            return result;
+            return await this.safeCallService.Call(command);
         }
 
         public Task<ToDoItem> UpdateAsync(int id, ToDoItem model)

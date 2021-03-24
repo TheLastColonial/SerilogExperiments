@@ -11,9 +11,7 @@
     public interface ISafeCallService
     {
         Task Call(SafeCallServiceCommand command);
-        Task Call(Func<Task> call, Guid correlationId, Type callingContext);
         Task<T> Call<T>(SafeCallServiceQuery<T> command);
-        Task<T> Call<T>(Func<Task<T>> call, Guid correlationId, Type callingContext);
     }
 
     /// <inheritdoc/>
@@ -26,72 +24,37 @@
             this.log = logger;
         }
 
-        public async Task Call(Func<Task> callAction, Guid correlationId, Type callingContext)
-        {
-            this.log.ForContext(callingContext);
-
-            try
-            {
-                using(this.log.BeginTimedOperation(callingContext.Name, identifier: correlationId.ToString()))
-                {
-                    await callAction.Invoke();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.log.Error(ex, $"Failed {callingContext.Name}");
-            }
-        }
-
-        public async Task<T> Call<T>(Func<Task<T>> callAction, Guid correlationId, Type callingContext)
-        {
-            this.log.ForContext(callingContext);
-
-            try
-            {
-                using (this.log.BeginTimedOperation(callingContext.Name, identifier: correlationId.ToString()))
-                {
-                   return await callAction.Invoke();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.log.Error(ex, $"Failed {callingContext.Name}");
-                return default(T);
-            }
-        }
-
         public async Task Call(SafeCallServiceCommand command)
         {
-            this.log.ForContext(command.Context);
+            this.log.ForContext(command.Metadata.Context);
 
             try
             {
-                using (this.log.BeginTimedOperation(command.Name, identifier: command.CorrelationId.ToString()))
+                using (this.log.BeginTimedOperation(command.Metadata.Name, identifier: command.Metadata.CorrelationId.ToString()))
                 {
                     await command.Func.Invoke();
                 }
             }
             catch (Exception ex)
             {
-                this.log.Error(ex, $"Failed {command.Context.Name}");
+                this.log.Error(ex, $"Failed {command.Metadata.Context.Name}");
             }
         }
 
         public async Task<T> Call<T>(SafeCallServiceQuery<T> command)
         {
-            this.log.ForContext(command.Context);
+            this.log.ForContext(command.Metadata.Context);
 
             try
             {
-                using (this.log.BeginTimedOperation(command.Name, identifier: command.CorrelationId.ToString()))
+                using (this.log.BeginTimedOperation(command.Metadata.Name, identifier: command.Metadata.CorrelationId.ToString()))
                 {
                     return await command.Func.Invoke();
                 }
             }
             catch (Exception ex)
             {
-                this.log.Error(ex, $"Failed {command.Context.Name}");
+                this.log.Error(ex, $"Failed {command.Metadata.Context.Name}");
                 return default(T);
             }
         }
