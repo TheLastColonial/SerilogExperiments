@@ -28,7 +28,7 @@
         public async Task<ToDoItem> GetByIdAsync(int id)
         {
             var command = new SafeCallServiceQuery<ToDoItem>(
-                this.SimulatedRequest,
+                this.SimulatedDbCall,
                 new SafeCallServiceLogMetadata(
                     Guid.NewGuid(),
                     typeof(ToDoRepository),
@@ -42,7 +42,7 @@
             throw new NotImplementedException();
         }
 
-        public async Task<ToDoItem> SimulatedRequest()
+        public async Task<ToDoItem> SimulatedDbCall()
         {
             await Task.Delay(1000);
             return new ToDoItem()
