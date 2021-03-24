@@ -2,9 +2,18 @@
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
-    using Serilog;
+    using Microsoft.Extensions.Primitives;
+    using Serilog.Context;
     using SerilogExperiments.Constants;
 
+    /// <summary>
+    /// Logging http header information for context
+    /// </summary>
+    /// <remarks>
+    /// By using <see cref="LogContext"/> the properties are persisted though all logging not just the top level.
+    /// However not sure saving the value to a logical thread will cause issues at scale.
+    /// </remarks>
+    /// <seealso cref="https://nblumhardt.com/2020/09/serilog-inject-dependencies/"/>
     public class HeaderLoggingMiddleware
     {
         private readonly RequestDelegate next;
@@ -14,24 +23,34 @@
             this.next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, IDiagnosticContext diagnosticContext)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
-            this.SetCorrelationId(httpContext, diagnosticContext);
-            this.SetMerchantId(httpContext, diagnosticContext);
-            // Timestamp
-            await this.next(httpContext);
+            // todo upgrade to http accessor with V3
+            using (LogContext.PushProperty(HttpHeaderConstants.CorrelationId, this.GetCorrelationId(httpContext)))
+            using (LogContext.PushProperty(HttpHeaderConstants.MerchantId, this.GetMerchantId(httpContext)))
+            {
+                await this.next(httpContext);
+            }
         }
 
-        protected void SetCorrelationId(HttpContext httpContext, IDiagnosticContext diagnosticContext)
+        protected StringValues GetCorrelationId(HttpContext httpContext)
         {
-            httpContext.Request.Headers.TryGetValue(HttpHeaderConstants.CorrelationId, out var correlationId);
-            diagnosticContext.Set(HttpHeaderConstants.CorrelationId, correlationId);
+            if (httpContext.Request.Headers.TryGetValue(HttpHeaderConstants.CorrelationId, out var correlationId))
+            {
+                return correlationId;
+            }
+
+            return new StringValues("Unknown");
         }
 
-        protected void SetMerchantId(HttpContext httpContext, IDiagnosticContext diagnosticContext)
+        protected StringValues GetMerchantId(HttpContext httpContext)
         {
-            httpContext.Request.Headers.TryGetValue(HttpHeaderConstants.MerchantId, out var merchantId);
-            diagnosticContext.Set(HttpHeaderConstants.MerchantId, merchantId);
+            if (httpContext.Request.Headers.TryGetValue(HttpHeaderConstants.MerchantId, out var merchantId))
+            {
+                return merchantId;
+            }
+
+            return new StringValues("Unknown");            
         }
     }
 }

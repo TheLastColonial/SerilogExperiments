@@ -59,7 +59,7 @@ namespace SerilogExperiments
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseMiddleware<HeaderLoggingMiddlewareV2>();
+            app.UseMiddleware<HeaderLoggingMiddleware>();
             app.UseSerilogRequestLogging();
 
             app.UseAuthorization();
