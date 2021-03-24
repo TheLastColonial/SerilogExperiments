@@ -30,14 +30,14 @@
         [ProducesDefaultResponseType(typeof(ToDoItem))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult GetById([FromRoute]int id)
+        public async Task<IActionResult> GetById([FromRoute]int id)
         {
             if (id <= 0)
             {
                 return this.BadRequest();
             }
 
-            var item = this.repository.GetById(id);
+            var item = await this.repository.GetByIdAsync(id);
 
             if (item == null)
             {

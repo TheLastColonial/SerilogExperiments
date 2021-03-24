@@ -1,40 +1,64 @@
 ﻿namespace SerilogExperiments.Repository
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Serilog;
     using SerilogExperiments.Models;
+    using SerilogExperiments.Services;
 
     public class ToDoRepository : IRepository<ToDoItem>
     {
-        private readonly ILogger log;
+        private readonly ISafeCallService safeCallService;
 
-        public ToDoRepository(ILogger logger)
+        public ToDoRepository(ISafeCallService safeCallService)
         {
-            this.log = logger?.ForContext<ToDoRepository>();
+            this.safeCallService = safeCallService;
         }
 
-        public int Create(ToDoItem model)
+        public Task<int> CreateAsync(ToDoItem model)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteById(int id)
+        public Task<bool> DeleteByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public ToDoItem GetById(int id)
+        public async Task<ToDoItem> GetByIdAsync(int id)
         {
-            log.Information("Get By Id");
-            return new ToDoItem() { Id = 1, Description = "This is an important item", Completed = true };
+            var result = await this.safeCallService.Call(                
+                this.SimulatedRequest,
+                //() =>
+                //{
+                //    Task.Delay(1000);
+                //    return Task.FromResult(new ToDoItem()
+                //    {
+                //        Id = 1,
+                //        Description = "This is an important item",
+                //        Completed = true
+                //    });
+                //},
+                Guid.NewGuid(),
+                typeof(ToDoRepository));
+
+            return result;
         }
 
-        public ToDoItem Update(int id, ToDoItem model)
+        public Task<ToDoItem> UpdateAsync(int id, ToDoItem model)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ToDoItem> SimulatedRequest()
+        {
+            await Task.Delay(1000);
+            return new ToDoItem()
+            {
+                Id = 1,
+                Description = "This is an important item",
+                Completed = true
+            };
         }
     }
 }

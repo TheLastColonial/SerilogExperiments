@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Moq;
     using NUnit.Framework;
@@ -22,7 +20,7 @@
         public void Setup()
         {
             this.MockLogger = LoggerStub.GetLogger();
-            this.CallService = new SafeCallService(this.MockLogger.Object, new Stopwatch());
+            this.CallService = new SafeCallService(this.MockLogger.Object);
         }
 
         /// <summary>
@@ -33,7 +31,7 @@
         [Test]
         public void Construction_WithValidParameters_DoesNotThrowException()
         {
-            Assert.DoesNotThrow(() => new SafeCallService(this.MockLogger.Object, new Stopwatch()));
+            Assert.DoesNotThrow(() => new SafeCallService(this.MockLogger.Object));
         }
 
         /// <summary>
@@ -44,10 +42,7 @@
         [Test]
         public async Task Call_WithValidParameters_LogTiming()
         {
-            await this.CallService.Call(() => Task.Delay(1000), typeof(SafeCallService));
-
-            this.MockLogger.Verify(x => x.Debug(It.IsAny<string>()), Times.Once);
-            this.MockLogger.Verify(x => x.Information(It.IsAny<string>()), Times.Once);
+            await this.CallService.Call(() => Task.Delay(1000), Guid.NewGuid(), typeof(SafeCallService));
         }
     }
 }

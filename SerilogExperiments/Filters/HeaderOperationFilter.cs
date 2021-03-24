@@ -24,7 +24,7 @@
                     Required = true,
                     Schema = new OpenApiSchema()
                     {
-                        Type = "String",
+                        //Type = "String",
                         // Format = "guid", // https://swagger.io/docs/specification/data-models/data-types/
                         Default = new OpenApiString(Guid.NewGuid().ToString())
                     }                    
@@ -39,7 +39,7 @@
                     Required = true,
                     Schema = new OpenApiSchema()
                     {
-                        Type = "String",
+                        //Type = "String",
                         // Format = "uri",
                         Default = new OpenApiString(merchantIdExample)
                     }

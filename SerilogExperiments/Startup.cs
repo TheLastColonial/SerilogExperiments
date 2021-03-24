@@ -11,6 +11,7 @@ namespace SerilogExperiments
     using SerilogExperiments.Middleware;
     using SerilogExperiments.Models;
     using SerilogExperiments.Repository;
+    using SerilogExperiments.Services;
 
     public class Startup
     {
@@ -36,7 +37,9 @@ namespace SerilogExperiments
                     });
                 c.OperationFilter<HeaderOperationFilter>();
             });
+
             services.AddSingleton<IRepository<ToDoItem>, ToDoRepository>();
+            services.AddTransient<ISafeCallService, SafeCallService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
