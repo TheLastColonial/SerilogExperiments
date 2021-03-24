@@ -5,6 +5,7 @@
     using Microsoft.Extensions.Primitives;
     using Serilog.Context;
     using SerilogExperiments.Constants;
+    using SerilogExperiments.Services;
 
     /// <summary>
     /// Logging http header information for context
@@ -23,34 +24,13 @@
             this.next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext, IHttpHeaderAccessor httpHeaderAccessor)
         {
-            // todo upgrade to http accessor with V3
-            using (LogContext.PushProperty(HttpHeaderConstants.CorrelationId, this.GetCorrelationId(httpContext)))
-            using (LogContext.PushProperty(HttpHeaderConstants.MerchantId, this.GetMerchantId(httpContext)))
+            using (LogContext.PushProperty(HttpHeaderConstants.CorrelationId, httpHeaderAccessor.CorrelationId))
+            using (LogContext.PushProperty(HttpHeaderConstants.MerchantId, httpHeaderAccessor.MerchantId))
             {
                 await this.next(httpContext);
             }
-        }
-
-        protected StringValues GetCorrelationId(HttpContext httpContext)
-        {
-            if (httpContext.Request.Headers.TryGetValue(HttpHeaderConstants.CorrelationId, out var correlationId))
-            {
-                return correlationId;
-            }
-
-            return new StringValues("Unknown");
-        }
-
-        protected StringValues GetMerchantId(HttpContext httpContext)
-        {
-            if (httpContext.Request.Headers.TryGetValue(HttpHeaderConstants.MerchantId, out var merchantId))
-            {
-                return merchantId;
-            }
-
-            return new StringValues("Unknown");            
         }
     }
 }
