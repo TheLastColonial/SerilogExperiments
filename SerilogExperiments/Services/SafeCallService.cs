@@ -17,13 +17,17 @@
     /// <inheritdoc/>
     public class SafeCallService : ISafeCallService
     {
+        private const string startMessage = "Start IO call";
+        private const string completeMessage = "Completed IO call";
+        private const string failedMessage = "Failed IO call";
+
         private readonly ILogger log;
         private readonly Stopwatch stopwatch;
 
-        public SafeCallService(ILogger logger)
+        public SafeCallService(ILogger logger, Stopwatch stopwatch)
         {
             this.log = logger;
-            this.stopwatch = new Stopwatch();
+            this.stopwatch = stopwatch;
         }
 
         public async Task Call(Func<Task> callAction, Type callingContext)
@@ -32,16 +36,16 @@
 
             try
             {
-                this.log.Debug("Start IO call");
+                this.log.Debug(startMessage);
                 this.stopwatch.Start();
                 await callAction.Invoke();
                 this.stopwatch.Stop();
-                this.log.Information("Completed IO call");
+                this.log.Information(completeMessage);
             }
             catch (Exception ex)
             {
                 this.stopwatch.Stop();
-                this.log.Error(ex, "Failed IO call");
+                this.log.Error(ex, failedMessage);
             }
         }
 
@@ -51,18 +55,18 @@
 
             try
             {
-                this.log.Debug("Start IO call");
+                this.log.Debug(startMessage);
                 this.stopwatch.Start();
                 var result = await callAction.Invoke();
                 this.stopwatch.Stop();
-                this.log.Information("Completed IO call");
+                this.log.Information(completeMessage);
 
                 return result;
             }
             catch (Exception ex)
             {
                 this.stopwatch.Stop();
-                this.log.Error(ex, "Failed IO call");
+                this.log.Error(ex, failedMessage);
                 return default(T);
             }
         }
