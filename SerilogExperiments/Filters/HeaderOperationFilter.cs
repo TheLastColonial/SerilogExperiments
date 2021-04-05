@@ -8,7 +8,7 @@
 
     public class HeaderOperationFilter : IOperationFilter
     {
-        private const string merchantIdExample = "/merchant/12345";
+        private const string merchantIdExample = "12345";
 
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
@@ -25,7 +25,7 @@
                     Schema = new OpenApiSchema()
                     {
                         //Type = "String",
-                        // Format = "guid", // https://swagger.io/docs/specification/data-models/data-types/
+                        //Format = "uuid", // https://swagger.io/docs/specification/data-models/data-types/
                         Default = new OpenApiString(Guid.NewGuid().ToString())
                     }                    
                 });

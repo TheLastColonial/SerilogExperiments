@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Primitives;
     using Serilog.Context;
     using SerilogExperiments.Constants;
     using SerilogExperiments.Services;
