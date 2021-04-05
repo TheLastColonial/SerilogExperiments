@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="Constants\" />
     <Folder Include="Controllers\" />
     <Folder Include="Filters\" />
