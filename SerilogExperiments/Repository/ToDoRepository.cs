@@ -29,12 +29,14 @@
 
         public async Task<ToDoItem> GetByIdAsync(int id)
         {
+            var meta = new SafeCallServiceLogMetadata(
+                this.headerAccessor.CorrelationId,
+                typeof(ToDoRepository),
+                nameof(this.GetByIdAsync));
+
             var command = new SafeCallServiceQuery<ToDoItem>(
                 this.SimulatedDbCall,
-                new SafeCallServiceLogMetadata(
-                    this.headerAccessor.CorrelationId,
-                    typeof(ToDoRepository),
-                    nameof(this.GetByIdAsync)));
+                meta);
 
             return await this.safeCallService.Call(command);
         }
