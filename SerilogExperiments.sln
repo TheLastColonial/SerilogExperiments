@@ -7,10 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerilogExperiments", "Seril
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA21C897-4D4C-411B-8420-43FDBFD37709}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		Dockerfile = Dockerfile
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerilogExperiments.Tests.Unit", "SerilogExperiments.Tests.Unit\SerilogExperiments.Tests.Unit.csproj", "{7D21C70C-C744-45A6-A683-C920473ACA86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerilogExperiments.Tests.Unit", "SerilogExperiments.Tests.Unit\SerilogExperiments.Tests.Unit.csproj", "{7D21C70C-C744-45A6-A683-C920473ACA86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
