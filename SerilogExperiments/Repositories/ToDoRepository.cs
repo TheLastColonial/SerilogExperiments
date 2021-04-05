@@ -1,4 +1,4 @@
-﻿namespace SerilogExperiments.Repository
+﻿namespace SerilogExperiments.Repositories
 {
     using System;
     using System.Threading.Tasks;

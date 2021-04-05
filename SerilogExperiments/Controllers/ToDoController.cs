@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using SerilogExperiments.Models;
-    using SerilogExperiments.Repository;
+    using SerilogExperiments.Repositories;
 
     /// <summary>
     /// Controller for To do list creation

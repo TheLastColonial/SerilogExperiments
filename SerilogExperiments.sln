@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerilogExperiments.UnitTests", "SerilogExperiments.UnitTests\SerilogExperiments.UnitTests.csproj", "{DF16D637-36C9-497A-B767-9C19712E9746}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerilogExperiments.Tests.Unit", "SerilogExperiments.Tests.Unit\SerilogExperiments.Tests.Unit.csproj", "{7D21C70C-C744-45A6-A683-C920473ACA86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{EB652726-7E10-4C53-ACAE-BFC4667BDA9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB652726-7E10-4C53-ACAE-BFC4667BDA9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB652726-7E10-4C53-ACAE-BFC4667BDA9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF16D637-36C9-497A-B767-9C19712E9746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF16D637-36C9-497A-B767-9C19712E9746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF16D637-36C9-497A-B767-9C19712E9746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF16D637-36C9-497A-B767-9C19712E9746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D21C70C-C744-45A6-A683-C920473ACA86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D21C70C-C744-45A6-A683-C920473ACA86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D21C70C-C744-45A6-A683-C920473ACA86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D21C70C-C744-45A6-A683-C920473ACA86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

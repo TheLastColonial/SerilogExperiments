@@ -10,7 +10,7 @@ namespace SerilogExperiments
     using SerilogExperiments.Filters;
     using SerilogExperiments.Middleware;
     using SerilogExperiments.Models;
-    using SerilogExperiments.Repository;
+    using SerilogExperiments.Repositories;
     using SerilogExperiments.Services;
 
     public class Startup
