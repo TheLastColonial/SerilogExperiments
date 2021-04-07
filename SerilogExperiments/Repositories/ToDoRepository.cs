@@ -38,7 +38,7 @@
                 this.SimulatedDbCall,
                 meta);
 
-            return await this.safeCallService.Call(command);
+            return await this.safeCallService.CallAsync(command);
         }
 
         public Task<ToDoItem> UpdateAsync(int id, ToDoItem model)

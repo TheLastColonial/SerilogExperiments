@@ -10,8 +10,8 @@
     /// </summary>
     public interface ISafeCallService
     {
-        Task Call(SafeCallServiceCommand command);
-        Task<T> Call<T>(SafeCallServiceQuery<T> command);
+        Task CallAsync(SafeCallServiceCommand command);
+        Task<T> CallAsync<T>(SafeCallServiceQuery<T> command);
     }
 
     /// <inheritdoc/>
@@ -24,7 +24,7 @@
             this.log = logger;
         }
 
-        public async Task Call(SafeCallServiceCommand command)
+        public async Task CallAsync(SafeCallServiceCommand command)
         {
             this.log.ForContext(command.Metadata.Context);
 
@@ -41,14 +41,14 @@
             }
         }
 
-        public async Task<T> Call<T>(SafeCallServiceQuery<T> command)
+        public async Task<T> CallAsync<T>(SafeCallServiceQuery<T> command)
         {
             this.log.ForContext(command.Metadata.Context);
 
             try
             {
                 using (this.log.BeginTimedOperation(command.Metadata.Name, identifier: command.Metadata.CorrelationId.ToString()))
-                {
+                {                    
                     return await command.Func.Invoke();
                 }
             }

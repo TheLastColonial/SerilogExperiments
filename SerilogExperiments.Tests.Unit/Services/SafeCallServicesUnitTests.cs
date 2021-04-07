@@ -48,7 +48,7 @@
                     typeof(SafeCallService),
                     "Unit Tests"));
 
-            await this.CallService.Call(command);
+            await this.CallService.CallAsync(command);
         }
     }
 }
